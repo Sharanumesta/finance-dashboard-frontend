@@ -13,11 +13,11 @@ const Sidebar = () => {
   const { hasRole } = useAuth();
 
   const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, roles: ['admin', 'analyst', 'viewer'] },
-    { name: 'Transactions', href: '/transactions', icon: CurrencyDollarIcon, roles: ['admin', 'analyst'] },
-    { name: 'Analytics', href: '/analytics', icon: ChartBarIcon, roles: ['admin', 'analyst'] },
-    { name: 'Users', href: '/users', icon: UsersIcon, roles: ['admin'] },
-    { name: 'Settings', href: '/settings', icon: Cog6ToothIcon, roles: ['admin'] },
+    { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, roles: ['ADMIN', 'ANALYST', 'VIEWER'] },
+    { name: 'Transactions', href: '/transactions', icon: CurrencyDollarIcon, roles: ['ADMIN', 'ANALYST'] },
+    { name: 'Analytics', href: '/analytics', icon: ChartBarIcon, roles: ['ADMIN', 'ANALYST'] },
+    { name: 'Users', href: '/users', icon: UsersIcon, roles: ['ADMIN'] },
+    { name: 'Settings', href: '/settings', icon: Cog6ToothIcon, roles: ['ADMIN'] },
   ];
 
   const filteredNavigation = navigation.filter(item => 
@@ -25,10 +25,10 @@ const Sidebar = () => {
   );
 
   return (
-    <div className="hidden lg:flex lg:flex-shrink-0">
+    <div className="hidden lg:flex lg:shrink-0">
       <div className="flex flex-col w-64 bg-white border-r">
-        <div className="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto">
-          <div className="flex items-center flex-shrink-0 px-4">
+        <div className="flex flex-col grow pt-5 pb-4 overflow-y-auto">
+          <div className="flex items-center shrink-0 px-4">
             <h1 className="text-xl font-bold text-indigo-600">FinanceApp</h1>
           </div>
           <nav className="mt-5 flex-1 px-2 space-y-1">

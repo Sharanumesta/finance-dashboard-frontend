@@ -1,6 +1,3 @@
-import React from 'react';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-
 const TransactionFilters = ({ filters, setFilters }) => {
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({

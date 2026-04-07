@@ -13,13 +13,9 @@ export const AuthProvider = ({ children }) => {
     const checkAuth = () => {
       const currentUser = authService.getCurrentUser();
       const token = authService.getToken();
-      
-      console.log('Checking auth - User exists:', !!currentUser);
-      console.log('Checking auth - Token exists:', !!token);
-      
+            
       if (currentUser && token) {
         setUser(currentUser);
-        console.log('User restored from storage:', currentUser);
       }
       setLoading(false);
     };
@@ -29,9 +25,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      console.log('Login attempt for:', credentials.email);
       const result = await authService.login(credentials);
-      console.log('Login successful, user:', result.user);
       setUser(result.user);
       return result;
     } catch (error) {
@@ -42,9 +36,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      console.log('Register attempt for:', userData.email);
       const result = await authService.register(userData);
-      console.log('Register successful, user:', result.user);
       setUser(result.user);
       return result;
     } catch (error) {
@@ -56,7 +48,6 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     authService.logout();
     setUser(null);
-    console.log('User logged out');
   };
 
   const hasRole = (roles) => {
