@@ -56,7 +56,7 @@ const SummaryCards = ({ summary }) => {
         >
           <div className="p-5">
             <div className="flex items-center">
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <div className={`${card.bgColor} rounded-md p-3`}>
                   <card.icon className={`h-6 w-6 ${card.color}`} aria-hidden="true" />
                 </div>

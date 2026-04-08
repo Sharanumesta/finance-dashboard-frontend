@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { dashboardService } from '../services/dashboard.service';
+import React, { useState, useEffect } from "react";
+import { dashboardService } from "../services/dashboard.service";
 import {
   BarChart,
   Bar,
@@ -10,9 +10,9 @@ import {
   Legend,
   ResponsiveContainer,
   LineChart,
-  Line
-} from 'recharts';
-import LoadingSpinner from '../components/Common/LoadingSpinner';
+  Line,
+} from "recharts";
+import LoadingSpinner from "../components/Common/LoadingSpinner";
 
 const Analytics = () => {
   const [monthlyData, setMonthlyData] = useState([]);
@@ -29,14 +29,14 @@ const Analytics = () => {
       const [monthlyRes, weeklyRes, categoriesRes] = await Promise.all([
         dashboardService.getMonthlyTrends(),
         dashboardService.getWeeklyTrends(),
-        dashboardService.getCategoryBreakdown()
+        dashboardService.getCategoryBreakdown(),
       ]);
 
-      setMonthlyData(monthlyRes.data);
-      setWeeklyData(weeklyRes.data);
-      setCategoryData(categoriesRes.data);
+      setMonthlyData(monthlyRes.data || []);
+      setWeeklyData(weeklyRes.data || []);
+      setCategoryData(categoriesRes.data || []);
     } catch (error) {
-      console.error('Error fetching analytics:', error);
+      console.error("Error fetching analytics:", error);
     } finally {
       setLoading(false);
     }
@@ -57,7 +57,9 @@ const Analytics = () => {
 
       <div className="space-y-6">
         <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Monthly Income vs Expenses</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-4">
+            Monthly Income vs Expenses
+          </h3>
           <div className="h-96">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={monthlyData}>
@@ -74,7 +76,9 @@ const Analytics = () => {
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Weekly Trends</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-4">
+            Weekly Trends
+          </h3>
           <div className="h-96">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={weeklyData}>
@@ -83,16 +87,33 @@ const Analytics = () => {
                 <YAxis tickFormatter={formatCurrency} />
                 <Tooltip formatter={(value) => formatCurrency(value)} />
                 <Legend />
-                <Line type="monotone" dataKey="income" stroke="#10B981" name="Income" />
-                <Line type="monotone" dataKey="expense" stroke="#EF4444" name="Expenses" />
-                <Line type="monotone" dataKey="net" stroke="#3B82F6" name="Net" />
+                <Line
+                  type="monotone"
+                  dataKey="income"
+                  stroke="#10B981"
+                  name="Income"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="expense"
+                  stroke="#EF4444"
+                  name="Expenses"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="net"
+                  stroke="#3B82F6"
+                  name="Net"
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Category Breakdown</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-4">
+            Category Breakdown
+          </h3>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
@@ -110,15 +131,28 @@ const Analytics = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {categoryData.map((category, index) => {
-                  const total = categoryData.reduce((sum, c) => sum + Math.abs(c.total), 0);
-                  const percentage = (Math.abs(category.total) / total) * 100;
+                  // Calculate total amount (income + expense)
+                  const totalAmount =
+                    Math.abs(category.income || 0) +
+                    Math.abs(category.expense || 0);
+
+                  // Calculate overall total for percentages
+                  const overallTotal = categoryData.reduce((sum, c) => {
+                    return (
+                      sum + (Math.abs(c.income || 0) + Math.abs(c.expense || 0))
+                    );
+                  }, 0);
+
+                  const percentage =
+                    overallTotal > 0 ? (totalAmount / overallTotal) * 100 : 0;
+
                   return (
                     <tr key={index}>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {category.category}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">
-                        {formatCurrency(Math.abs(category.total))}
+                        {formatCurrency(totalAmount)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
                         {percentage.toFixed(1)}%

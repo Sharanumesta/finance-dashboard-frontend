@@ -27,8 +27,8 @@ const Transactions = () => {
     pages: 1
   });
 
-  const canEdit = hasRole('admin');
-  const canView = hasRole(['admin', 'analyst']);
+  const canEdit = hasRole('ADMIN');
+  const canView = hasRole(['ADMIN', 'ANALYST']);
 
   useEffect(() => {
     if (canView) {
@@ -40,8 +40,8 @@ const Transactions = () => {
     setLoading(true);
     try {
       const response = await transactionService.getTransactions(filters);
-      setTransactions(response.data.transactions);
-      setPagination(response.data.pagination);
+      setTransactions(response.transactions);
+      setPagination(response.pagination);
     } catch (error) {
       console.error('Error fetching transactions:', error);
     } finally {

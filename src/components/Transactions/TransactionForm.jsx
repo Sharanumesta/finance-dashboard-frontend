@@ -4,7 +4,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 const TransactionForm = ({ transaction, onSubmit, onClose }) => {
   const [formData, setFormData] = useState({
     amount: '',
-    type: 'expense',
+    type: 'EXPENSE',
     category: '',
     date: new Date().toISOString().split('T')[0],
     notes: ''
@@ -78,8 +78,8 @@ const TransactionForm = ({ transaction, onSubmit, onClose }) => {
                 <input
                   type="radio"
                   name="type"
-                  value="income"
-                  checked={formData.type === 'income'}
+                  value="INCOME"
+                  checked={formData.type === 'INCOME'}
                   onChange={handleChange}
                   className="text-indigo-600"
                 />

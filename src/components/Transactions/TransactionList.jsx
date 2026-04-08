@@ -1,34 +1,33 @@
-import React from 'react';
-import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-const TransactionList = ({ 
-  transactions, 
-  canEdit, 
-  onEdit, 
-  onDelete, 
-  pagination, 
-  setFilters 
+const TransactionList = ({
+  transactions = [],
+  canEdit,
+  onEdit,
+  onDelete,
+  pagination,
+  setFilters,
 }) => {
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
     }).format(amount);
   };
 
   const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
+    return new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
   };
 
   const getTypeBadge = (type) => {
-    return type === 'income' 
-      ? 'bg-green-100 text-green-800'
-      : 'bg-red-100 text-red-800';
-    };
+    return type === "INCOME"
+      ? "bg-green-100 text-green-800"
+      : "bg-red-100 text-red-800";
+  };
 
   if (transactions.length === 0) {
     return (
@@ -73,19 +72,25 @@ const TransactionList = ({
                   {formatDate(transaction.date)}
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-900">
-                  {transaction.notes || '-'}
+                  {transaction.notes || "-"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {transaction.category}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getTypeBadge(transaction.type)}`}>
+                  <span
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getTypeBadge(transaction.type)}`}
+                  >
                     {transaction.type}
                   </span>
                 </td>
-                <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium text-right ${
-                  transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
-                }`}>
+                <td
+                  className={`px-6 py-4 whitespace-nowrap text-sm font-medium text-right ${
+                    transaction.type === "INCOME"
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
                   {formatCurrency(transaction.amount)}
                 </td>
                 {canEdit && (
@@ -117,14 +122,18 @@ const TransactionList = ({
           </div>
           <div className="flex space-x-2">
             <button
-              onClick={() => setFilters(prev => ({ ...prev, page: prev.page - 1 }))}
+              onClick={() =>
+                setFilters((prev) => ({ ...prev, page: prev.page - 1 }))
+              }
               disabled={pagination.page === 1}
               className="px-3 py-1 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
             >
               Previous
             </button>
             <button
-              onClick={() => setFilters(prev => ({ ...prev, page: prev.page + 1 }))}
+              onClick={() =>
+                setFilters((prev) => ({ ...prev, page: prev.page + 1 }))
+              }
               disabled={pagination.page === pagination.pages}
               className="px-3 py-1 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
             >

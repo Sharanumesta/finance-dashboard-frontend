@@ -25,7 +25,6 @@ const Dashboard = () => {
         dashboardService.getMonthlyTrends(),
         dashboardService.getRecentActivity(10)
       ]);
-
       setSummary(summaryRes.data);
       setCategoryData(categoriesRes.data);
       setMonthlyData(monthlyRes.data);

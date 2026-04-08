@@ -14,7 +14,7 @@ const Users = () => {
   const [editingUser, setEditingUser] = useState(null);
 
   useEffect(() => {
-    if (hasRole('admin')) {
+    if (hasRole('ADMIN')) {
       fetchUsers();
     }
   }, []);
@@ -58,7 +58,7 @@ const Users = () => {
     setShowForm(true);
   };
 
-  if (!hasRole('admin')) {
+  if (!hasRole('ADMIN')) {
     return (
       <div className="text-center py-12">
         <p className="text-red-600">You don't have permission to view this page.</p>

@@ -3,6 +3,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recha
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D'];
 
 const CategoryChart = ({ data }) => {
+  console.log(data)
   if (!data || data.length === 0) {
     return (
       <div className="bg-white p-6 rounded-lg shadow">
@@ -12,10 +13,12 @@ const CategoryChart = ({ data }) => {
     );
   }
 
-  const formattedData = data.map(item => ({
+const formattedData = data
+  .map(item => ({
     name: item.category,
-    value: Math.abs(item.total)
-  }));
+    value: item.expense
+  }))
+  .filter(item => item.value > 0);
 
   return (
     <div className="bg-white p-6 rounded-lg shadow">
@@ -29,7 +32,7 @@ const CategoryChart = ({ data }) => {
               cy="50%"
               labelLine={false}
               label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-              outerRadius={80}
+              outerRadius={120}
               fill="#8884d8"
               dataKey="value"
             >

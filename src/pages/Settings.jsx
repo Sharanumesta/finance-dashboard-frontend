@@ -43,7 +43,7 @@ const Settings = () => {
     }
   };
 
-  if (!hasRole('admin')) {
+  if (!hasRole('ADMIN')) {
     return (
       <div className="text-center py-12">
         <p className="text-red-600">You don't have permission to view this page.</p>
