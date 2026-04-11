@@ -5,6 +5,7 @@ import CategoryChart from '../components/Dashboard/CategoryChart';
 import RecentTransactions from '../components/Dashboard/RecentTransactions';
 import TrendsChart from '../components/Dashboard/TrendsChart';
 import LoadingSpinner from '../components/Common/LoadingSpinner';
+import CategoryBreakdown from "../components/Dashboard/CategoryChart";
 
 const Dashboard = () => {
   const [summary, setSummary] = useState(null);
@@ -36,6 +37,10 @@ const Dashboard = () => {
     }
   };
 
+  const formatCurrency = (value) => {
+    return `$${value.toLocaleString()}`;
+  };
+
   if (loading) return <LoadingSpinner />;
 
   return (
@@ -47,9 +52,32 @@ const Dashboard = () => {
 
       <SummaryCards summary={summary} />
       
+      {/* First row: Original charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-        <CategoryChart data={categoryData} />
+        {/* <CategoryChart data={categoryData} /> */}
+      </div>
+      
+      {/* Second row: Additional category breakdowns */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        {/* Compact category breakdown showing top 5 categories */}
         <TrendsChart data={monthlyData} />
+        {/* Pie chart only showing category distribution */}
+        <CategoryBreakdown 
+          categoryData={categoryData}
+          formatCurrency={formatCurrency}
+          title="Category Distribution"
+          showPieChart={true}
+          showTable={false}
+          height={350}
+        />
+        <CategoryBreakdown 
+          categoryData={categoryData.slice(0, 5)}
+          formatCurrency={formatCurrency}
+          title="Top Categories"
+          showPieChart={true}
+          showTable={true}
+          height={300}
+        />
       </div>
       
       <div className="mt-6">

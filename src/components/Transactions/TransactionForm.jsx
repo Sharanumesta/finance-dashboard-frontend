@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
-const TransactionForm = ({ transaction, onSubmit, onClose }) => {
+const TransactionForm = ({ transaction, onSubmit, onClose, loading }) => {
   const [formData, setFormData] = useState({
     amount: '',
-    type: 'EXPENSE',
+    type: 'expense',
     category: '',
     date: new Date().toISOString().split('T')[0],
     notes: ''
@@ -17,12 +17,13 @@ const TransactionForm = ({ transaction, onSubmit, onClose }) => {
 
   useEffect(() => {
     if (transaction) {
+      console.log('Setting form data from transaction:', transaction);
       setFormData({
         amount: transaction.amount,
         type: transaction.type,
         category: transaction.category,
-        date: transaction.date.split('T')[0],
-        notes: transaction.notes || ''
+        date: transaction.date ? transaction.date.split('T')[0] : new Date().toISOString().split('T')[0],
+        notes: transaction.notes || transaction.description || ''
       });
     }
   }, [transaction]);
@@ -78,10 +79,11 @@ const TransactionForm = ({ transaction, onSubmit, onClose }) => {
                 <input
                   type="radio"
                   name="type"
-                  value="INCOME"
-                  checked={formData.type === 'INCOME'}
+                  value="income"
+                  checked={formData.type === 'income'}
                   onChange={handleChange}
                   className="text-indigo-600"
+                  disabled={loading}
                 />
                 <span className="ml-2 text-sm text-gray-700">Income</span>
               </label>
@@ -93,6 +95,7 @@ const TransactionForm = ({ transaction, onSubmit, onClose }) => {
                   checked={formData.type === 'expense'}
                   onChange={handleChange}
                   className="text-indigo-600"
+                  disabled={loading}
                 />
                 <span className="ml-2 text-sm text-gray-700">Expense</span>
               </label>
@@ -109,6 +112,7 @@ const TransactionForm = ({ transaction, onSubmit, onClose }) => {
               required
               min="0"
               step="0.01"
+              disabled={loading}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             />
           </div>
@@ -120,10 +124,11 @@ const TransactionForm = ({ transaction, onSubmit, onClose }) => {
               value={formData.category}
               onChange={handleChange}
               required
+              disabled={loading}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             >
               <option value="">Select a category</option>
-              {categories[formData.type].map(cat => (
+              {categories[formData.type]?.map(cat => (
                 <option key={cat} value={cat}>{cat}</option>
               ))}
             </select>
@@ -137,6 +142,7 @@ const TransactionForm = ({ transaction, onSubmit, onClose }) => {
               value={formData.date}
               onChange={handleChange}
               required
+              disabled={loading}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             />
           </div>
@@ -148,6 +154,7 @@ const TransactionForm = ({ transaction, onSubmit, onClose }) => {
               value={formData.notes}
               onChange={handleChange}
               rows="3"
+              disabled={loading}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               placeholder="Optional description"
             />
@@ -157,15 +164,17 @@ const TransactionForm = ({ transaction, onSubmit, onClose }) => {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
+              disabled={loading}
+              className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700"
+              disabled={loading}
+              className="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 disabled:opacity-50"
             >
-              {transaction ? 'Update' : 'Create'}
+              {loading ? 'Saving...' : (transaction ? 'Update' : 'Create')}
             </button>
           </div>
         </form>

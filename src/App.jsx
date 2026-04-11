@@ -34,9 +34,17 @@ function AppRoutes() {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="transactions" element={<Transactions />} />
         <Route path="analytics" element={<Analytics />} />
-        <Route path="users" element={<Users />} />
+        <Route path="users" element={
+          <PrivateRoute roles={['ADMIN']}>
+            <Users />
+          </PrivateRoute>
+        } />
         <Route path="profile" element={<Profile />} />
-        <Route path="settings" element={<Settings />} />
+        <Route path="settings" element={
+          <PrivateRoute roles={['ADMIN']}>
+            <Settings />
+          </PrivateRoute>
+        } />
       </Route>
     </Routes>
   );
